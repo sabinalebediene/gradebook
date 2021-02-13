@@ -1,44 +1,42 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Create new Grade{% endblock %}
+{% block title %}Create new Grade
+{% endblock %}
 
 {% block body %}
-    <h1 class="create">Create new Grade</h1>
-    <div class="hero-bg create"></div>
-    <div class="menu">
-        <a class="nav" href="{{path('grade_index')}}">Grade list</a>
-        <a class="nav checked" href="{{path('grade_create')}}">New Grade</a>
-        <a class="nav" href="{{path('lecture_index')}}">Lecture list</a>
-        <a class="nav" href="{{path('lecture_create')}}">New Lecture</a>
-        <a class="nav" href="{{path('student_index')}}">Student list</a>
-        <a class="nav" href="{{path('student_create')}}">New Student</a>
-    </div>
-    <div class="container create">
-        <form action="{{path('grade_store')}}" method="POST">
-            <div class="new">
-                <p>Student:</p>
-                <select name="grades_student">
-                        <option value="0">Select student</option>
-                    {% for student in students %}
-                        <option value="{{student.id}}">{{student.name}} {{student.surname}}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="new">
-                <p>Lecture:</p>
-                <select name="grades_lecture">
-                        <option value="0">Select lecture</option>
-                    {% for lecture in lectures %}
-                        <option value="{{lecture.id}}">{{lecture.title}}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="new">
-                <p>Grade:</p>
-                <input type="text" name="grade_grade">
-            </div>
-            <button class="submit-btn create" type="submit">Add new Grade</button>
-            {# <input type="hidden" name="token" value="{{csrf_token('')}}"/> #}
-        </form>
-    </div>
-{% endblock %}
+	<div class="container-fluid">
+		<div class="row justify-content-center">
+			<div class="col-md-8">
+				<div class="card">
+					<div class="card-header">
+						<h1 class="create">Create new Grade</h1>
+						<div class="container create">
+							<form action="{{path('grade_store')}}" method="POST">
+								<div class="new">
+									<p>Student:</p>
+									<select name="grades_student">
+										<option value="0">Select student</option>
+										{% for student in students %}
+											<option value="{{student.id}}">{{student.name}}
+												{{student.surname}}</option>
+										{% endfor %}
+									</select>
+								</div>
+								<div class="new">
+									<p>Lecture:</p>
+									<select name="grades_lecture">
+										<option value="0">Select lecture</option>
+										{% for lecture in lectures %}
+											<option value="{{lecture.id}}">{{lecture.title}}</option>
+										{% endfor %}
+									</select>
+								</div>
+								<div class="new">
+									<p>Grade:</p>
+									<input type="text" name="grade_grade">
+								</div>
+								<button class="submit-btn create" type="submit">Add new Grade</button>
+								{# <input type="hidden" name="token" value="{{csrf_token('')}}"/> #}
+							</form>
+						</div>
+					{% endblock %}
