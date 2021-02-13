@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Create new Lecture
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-md-8">
+				<div class="card">
+					<div class="card-header">
+						<h1>Create new Lecture ✅</h1>
+					</div>
+
+					<div class="card-body">
+						<form action="{{path('lecture_store')}}" method="POST">
+							<div class="form-group">
+								<input type="text" name="lecture_title" class="form-control">
+								<small class="form-text text-muted">Lecture title</small>
+							</div>
+							<div class="form-group">
+								<label>Description</label>
+								<textarea name="lecture_description" id="summernote"></textarea>
+							</div>
+							<div class="form-group">
+								<select name="lecture_student_id" class="form-control">
+									<option value="0">Select student</option>
+									{% for student in students %}
+										<option value="{{student.id}}">{{student.name}}
+											{{student.surname}}</option>
+									{% endfor %}
+								</select>
+							</div>
+							<button type="submit" class="btn btn-dark">Add new Lecture</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

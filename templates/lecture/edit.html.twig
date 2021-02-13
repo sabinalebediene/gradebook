@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Lecture
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-md-8">
+				<div class="card">
+					<div class="card-header">
+						<h1>Edit Lecture ✅</h1>
+					</div>
+
+					<div class="card-body">
+						<form action="{{path('lecture_update', {id: lecture.id})}}" method="POST">
+							Title:
+							<input type="text" name="book_title" value="{{book.title}}">
+							Discription:
+							<textarea name="lecture_description" id="summernote">{{lecture.description}}</textarea>
+							<select name="lecture_student_id">
+								{% for student in students %}
+									<option value="{{student.id}}" {% if student.id == lecture.StudentId %} selected {% endif %}>
+										{{student.name}}
+										{{student.surname}}
+									</option>
+								{% endfor %}
+							</select>
+							<button type="submit">Edit Lecture</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit grade
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-md-8">
+				<div class="card">
+					<div class="card-header">
+						<h1>Edit Grade ✅</h1>
+					</div>
+
+					<div class="card-body">
+						<form action="{{path('grade_update', {id: grade.id})}}" method="POST">
+							Grade:
+							<input type="text" name="grade_grade" value="{{grade.grade}}">
+							<select name="grade_student_id">
+								{% for student in students %}
+									<option value="{{student.id}}" {% if student.id == grade.StudentId %} selected {% endif %}>
+										{{student.name}}
+										{{student.surname}}
+									</option>
+								{% endfor %}
+							</select>
+							<select name="grade_lecture_id">
+								{% for lecture in lectures %}
+									<option value="{{lecture.id}}" {% if lecture.id == grade.LectureId %} selected {% endif %}>
+										{{lecture.title}}
+									</option>
+								{% endfor %}
+							</select>
+							<button type="submit">Edit grade</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
