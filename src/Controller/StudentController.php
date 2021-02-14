@@ -52,6 +52,8 @@ class StudentController extends AbstractController
         return $this->render('student/index.html.twig', [
             'students' => $students,
             'sortBy' => $r->query->get('sort') ?? 'default',
+            'success' => $r->getSession()->getFlashBag()->get('success', []),
+            'errors' => $r->getSession()->getFlashBag()->get('errors', []),
         ]);
     }
 
@@ -112,6 +114,8 @@ class StudentController extends AbstractController
         $entityManager->persist($student);
         $entityManager->flush();
 
+        $r->getSession()->getFlashBag()->add('success', 'Studentas sekmingai pridetas.');
+
         return $this->redirectToRoute('student_index');
     }
 
@@ -133,6 +137,7 @@ class StudentController extends AbstractController
         return $this->render('student/edit.html.twig', [
             'student' => $student, // perduodame
             'errors' => $r->getSession()->getFlashBag()->get('errors', []),
+            'success' => $r->getSession()->getFlashBag()->get('success', []),
             'student_name' => $student_name[0] ?? '',
             'student_surname' => $student_surname[0] ?? '',
             'student_email' => $student_email[0] ?? '',
@@ -178,23 +183,31 @@ class StudentController extends AbstractController
         $entityManager->persist($student);
         $entityManager->flush();
 
+        $r->getSession()->getFlashBag()->add('success', 'Studentas ' .$student->getName().' '.$student->getSurname().' sekimgai pakeistas');
+
         return $this->redirectToRoute('student_index');
     }
 
     /**
      * @Route("/student/delete/{id}", name="student_delete", methods={"POST"})
      */
-    public function delete($id): Response
+    public function delete(Request $r, $id): Response
     {
         $student = $this->getDoctrine()
         ->getRepository(Student::class)
         ->find($id); // randame butent ta autoriu, kurio id perduodamas
 
+        if ($student->getGrades()->count() > 0) {
+            $r->getSession()->getFlashBag()->add('errors', 'Pazymetas studentas '.$student->getName().' '.$student->getSurname().' negali buti istrintas ('.$student->getGrades()->count().' yra ivertintas pazymiu).');
+            return $this->redirectToRoute('student_index');
+        }
 
         // remove metodu padauodame ta autoriu ir vykdome
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($student);
         $entityManager->flush();
+
+        $r->getSession()->getFlashBag()->add('success', 'Studentas ' .$student->getName().' '.$student->getSurname().' sekimgai istrintas');
 
         return $this->redirectToRoute('student_index');
     }

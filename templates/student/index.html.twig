@@ -29,34 +29,43 @@
 							<button type="submit" class="btn btn-dark">Sort IT!</button>
 							<a href="{{path('student_index')}}">CLEAR</a>
 						</form>
-						<ul class="list-group">
-							{% for student in students %}
-								<li class="container list-group-item">
-									<div class="row list-group-item__line">
-										<div class="col-sm">
-											{{student.name}}
-											{{student.surname}}
-										</div>
-										<div class="col-sm">
-											{{student.email}}
-										</div>
-										<div class="col-sm">
-											{{student.phone}}
-										</div>
-										<div class="btn-group list-group-item__line__buttons" role="group" aria-label="Basic example">
-											<a href="{{path('student_edit', {id:student.id})}}" class="btn btn-success">EDIT</a>
-											<form action="{{path('student_delete', {id:student.id})}}" method="POST">
-												<button type="submit" class="btn btn-danger">DELETE</button>
-											</form>
-										</div>
-									</div>
-								</li>
-							{% endfor %}
-						</ul>
+						<div class="table-responsive-sm">
+							<table class="table">
+								<thead class="thead-dark">
+									<tr>
+										<th scope="col">Student Name</th>
+										<th scope="col">Email</th>
+										<th scope="col">Phone</th>
+										<th scope="col"></th>
+									</tr>
+								</thead>
+								{% for student in students %}
+									<tbody>
+										<tr>
+											<td>
+												{{student.name}}
+												{{student.surname}}
+											</td>
+											<td>
+												{{student.email}}
+											</td>
+											<td>
+												{{student.phone}}
+											</td>
+											<td class="list-group-item__line__buttons" role="group" aria-label="Basic example">
+												<a href="{{path('student_edit', {id:student.id})}}" class="btn btn-secondary">EDIT</a>
+												<form action="{{path('student_delete', {id:student.id})}}" method="POST">
+													<button type="submit" class="btn btn-primary">DELETE</button>
+												</form>
+											</td>
+										</tr>
+									</tbody>
+								{% endfor %}
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-
 {% endblock %}

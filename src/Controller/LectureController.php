@@ -48,6 +48,8 @@ class LectureController extends AbstractController
             'students' => $students,
             'studentId' => $r->query->get('student_id') ?? 0,
             'sortBy' => $r->query->get('sort') ?? 'default',
+            'success' => $r->getSession()->getFlashBag()->get('success', []),
+            'errors' => $r->getSession()->getFlashBag()->get('errors', [])
         ]);
     }
 
@@ -151,17 +153,24 @@ class LectureController extends AbstractController
     /**
      * @Route("/lecture/delete/{id}", name="lecture_delete", methods={"POST"})
      */
-    public function delete($id): Response
+    public function delete(Request $r, $id): Response
     {
 
         $lecture = $this->getDoctrine()
         ->getRepository(Lecture::class)
         ->find($id); // randame butent ta autoriu, kurio id perduodamas
 
+        if ($lecture->getGrades()->count() > 0) {
+            $r->getSession()->getFlashBag()->add('errors', 'Dalykas pazymetas '.$lecture->getName().' negali buti istrintas ('.$lecture->getGrades()->count().' ivertinas pazymiu).');
+            return $this->redirectToRoute('lecture_index');
+        }
+
         // remove metodu padauodame ta autoriu ir vykdome
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($lecture);
         $entityManager->flush();
+
+        $r->getSession()->getFlashBag()->add('success', $lecture->getName().' Sekmingai istrintas');
 
         return $this->redirectToRoute('lecture_index');
     }

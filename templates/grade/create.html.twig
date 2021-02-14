@@ -4,39 +4,44 @@
 {% endblock %}
 
 {% block body %}
-	<div class="container-fluid">
+	<div class="container">
 		<div class="row justify-content-center">
 			<div class="col-md-8">
 				<div class="card">
 					<div class="card-header">
-						<h1 class="create">Create new Grade</h1>
-						<div class="container create">
-							<form action="{{path('grade_store')}}" method="POST">
-								<div class="new">
-									<p>Student:</p>
-									<select name="grades_student">
-										<option value="0">Select student</option>
-										{% for student in students %}
-											<option value="{{student.id}}">{{student.name}}
-												{{student.surname}}</option>
-										{% endfor %}
-									</select>
-								</div>
-								<div class="new">
-									<p>Lecture:</p>
-									<select name="grades_lecture">
-										<option value="0">Select lecture</option>
-										{% for lecture in lectures %}
-											<option value="{{lecture.id}}">{{lecture.title}}</option>
-										{% endfor %}
-									</select>
-								</div>
-								<div class="new">
-									<p>Grade:</p>
-									<input type="text" name="grade_grade">
-								</div>
-								<button class="submit-btn create" type="submit">Add new Grade</button>
-								{# <input type="hidden" name="token" value="{{csrf_token('')}}"/> #}
-							</form>
-						</div>
-					{% endblock %}
+						<h1>Create new Grade</h1>
+					</div>
+					<div class="card-body">
+						<form action="{{path('grade_store')}}" method="POST">
+							<div class="new">
+								<p>Student:</p>
+								<select name="grades_student" class="form-control">
+									<option value="0">Select student</option>
+									{% for student in students %}
+										<option value="{{student.id}}">{{student.name}}
+											{{student.surname}}</option>
+									{% endfor %}
+								</select>
+							</div>
+							<div class="new">
+								<p>Lecture:</p>
+								<select name="grades_lecture" class="form-control">
+									<option value="0">Select lecture</option>
+									{% for lecture in lectures %}
+										<option value="{{lecture.id}}">{{lecture.title}}</option>
+									{% endfor %}
+								</select>
+							</div>
+							<div class="new">
+								<p>Grade:</p>
+								<input type="text" class="form-control" name="grade_grade">
+							</div>
+							<button type="submit" class="btn btn-primary">Add new Grade</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

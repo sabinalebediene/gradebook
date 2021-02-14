@@ -6,6 +6,7 @@ use App\Repository\StudentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=StudentRepository::class)
@@ -21,11 +22,25 @@ class Student
 
     /**
      * @ORM\Column(type="string", length=64)
+     * @Assert\NotBlank(message="Vardas negali buti tuscias")
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 64,
+     *      minMessage = "Vardas per trumpas. Turi buti bent  {{ limit }}  ilgio",
+     *      maxMessage = "Vardas per ilgas. Telpa tik {{ limit }} ilgis"
+     * )
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=64)
+     * @Assert\NotBlank(message="Vardas negali buti tuscias")
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 64,
+     *      minMessage = "Pavarde per trumpa. Turi buti bent  {{ limit }}  ilgio",
+     *      maxMessage = "Pavarde per ilga. Telpa tik {{ limit }} ilgis"
+     * )
      */
     private $surname;
 

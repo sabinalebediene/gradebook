@@ -151,7 +151,7 @@ class GradeController extends AbstractController
     /**
      * @Route("/grade/update/{id}", name="grade_update", methods={"POST"})
      */
-    public function update(request $r, $id, ValidatorInterface $validator): Response
+    public function update(Request $r, $id, ValidatorInterface $validator): Response
     {
 
         $grade = $this->getDoctrine()
@@ -183,7 +183,7 @@ class GradeController extends AbstractController
     /**
      * @Route("/grade/delete/{id}", name="grade_delete", methods={"POST"})
      */
-    public function delete($id): Response
+    public function delete(Request $r, $id): Response
     {
 
         $grade = $this->getDoctrine()
@@ -194,6 +194,8 @@ class GradeController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($grade);
         $entityManager->flush();
+
+        $r->getSession()->getFlashBag()->add('success', 'Grade '.$grade->getGrade().' from '.$grade->getLecture()->getName().' for '.$grade->getStudent()->getName().' '.$grade->getStudent()->getSurname().' was deleted.');
 
         return $this->redirectToRoute('grade_index');
     }
