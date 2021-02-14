@@ -46,7 +46,6 @@ class LectureController extends AbstractController
         return $this->render('lecture/index.html.twig', [
             'lectures' => $lectures,
             'students' => $students,
-            'studentId' => $r->query->get('student_id') ?? 0,
             'sortBy' => $r->query->get('sort') ?? 'default',
             'success' => $r->getSession()->getFlashBag()->get('success', []),
             'errors' => $r->getSession()->getFlashBag()->get('errors', [])
@@ -59,12 +58,12 @@ class LectureController extends AbstractController
     public function create(Request $r): Response
     {
 
-        $students = $this->getDoctrine()
-        ->getRepository(Student::class)
-        ->findBy([], ['surname' => 'asc']);
+        $lecture_title = $r->getSession()->getFlashBag()->get('lecture_title', []);
+        $lecture_description = $r->getSession()->getFlashBag()->get('lecture_description', []);
 
         return $this->render('lecture/create.html.twig', [
-            'students' => $students,
+            'lecture_title' => $lecture_title[0] ?? '',
+            'lecture_description' => $lecture_description[0] ?? '',
             'errors' => $r->getSession()->getFlashBag()->get('errors', [])
         ]);
     }
@@ -101,26 +100,31 @@ class LectureController extends AbstractController
         $entityManager->persist($lecture);
         $entityManager->flush();
 
+        $r->getSession()->getFlashBag()->add('success', $lecture->getTitle().' sekmingai sukurtas.');
+
         return $this->redirectToRoute('lecture_index');
     }
 
     /**
      * @Route("/lecture/edit/{id}", name="lecture_edit", methods={"GET"})
      */
-    public function edit(int $id): Response
+    public function edit(Request $r, int $id): Response
     {
 
         $lecture = $this->getDoctrine()
         ->getRepository(Lecture::class)
         ->find($id); // randame butent ta autoriu, kurio id perduodamas
 
-        $students = $this->getDoctrine()
-        ->getRepository(Student::class)
-        ->findBy([], ['surname' => 'asc']);
+        $lecture_title = $r->getSession()->getFlashBag()->get('lecture_title', []);
+        $lecture_description = $r->getSession()->getFlashBag()->get('lecture_description', []);
+
 
         return $this->render('lecture/edit.html.twig', [
-            'lecture' => $lecture, // perduodame
-            'students' => $students,
+            'lecture' => $lecture,
+            'lecture_title' => $lecture_title[0] ?? '',
+            'lecture_description' => $lecture_description[0] ?? '',
+            'errors' => $r->getSession()->getFlashBag()->get('errors', []),
+            'success' => $r->getSession()->getFlashBag()->get('success', [])
         ]);
     }
 
@@ -134,18 +138,15 @@ class LectureController extends AbstractController
         ->getRepository(Lecture::class)
         ->find($id); // randame butent ta autoriu, kurio id perduodamas
 
-        $student = $this->getDoctrine()
-        ->getRepository(Student::class)
-        ->find($r->request->get('lecture_student_id'));
-
         $lecture
-        ->setTitle($r->request->get(';ecture_title'))
-        ->setDescription($r->request->get('lecture_description'))
-        ->setStudent($student);
+        ->setTitle($r->request->get('lecture_title'))
+        ->setDescription($r->request->get('lecture_description'));
 
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($lecture);
         $entityManager->flush();
+
+        $r->getSession()->getFlashBag()->add('success', $lecture->getTitle().' sekimngai pakeistas.');
 
         return $this->redirectToRoute('lecture_index');
     }
@@ -161,7 +162,7 @@ class LectureController extends AbstractController
         ->find($id); // randame butent ta autoriu, kurio id perduodamas
 
         if ($lecture->getGrades()->count() > 0) {
-            $r->getSession()->getFlashBag()->add('errors', 'Dalykas pazymetas '.$lecture->getName().' negali buti istrintas ('.$lecture->getGrades()->count().' ivertinas pazymiu).');
+            $r->getSession()->getFlashBag()->add('errors', 'Dalykas pazymetas '.$lecture->getTitle().' negali buti istrintas ('.$lecture->getGrades()->count().' ivertinas pazymiu).');
             return $this->redirectToRoute('lecture_index');
         }
 
@@ -170,7 +171,7 @@ class LectureController extends AbstractController
         $entityManager->remove($lecture);
         $entityManager->flush();
 
-        $r->getSession()->getFlashBag()->add('success', $lecture->getName().' Sekmingai istrintas');
+        $r->getSession()->getFlashBag()->add('success', $lecture->getTitle().' Sekmingai istrintas');
 
         return $this->redirectToRoute('lecture_index');
     }

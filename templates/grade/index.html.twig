@@ -1,9 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Grades list
+{% block title %}Grade List
 {% endblock %}
 
 {% block body %}
+
+
 	<div class="container-fluid">
 		<div class="row justify-content-center">
 			<div class="col-md-8">
@@ -11,53 +13,56 @@
 					<div class="card-header">
 						<h1>Grades</h1>
 					</div>
+
 					<div class="card-body">
-						List order by:
+						List filter by:
 						<form action="{{path('grade_index')}}" method="GET">
 							<select name="student_id" class="form-control">
-								<option value="0">View all</option>
-								//TODO: filter kad pasiliktų studentas išfiltruotas kaip selected
+								<option value="0">View All</option>
 								{% for student in students %}
-									<option value="{{student.id}}">{{student.name}}
+									<option value="{{student.id}}" {% if studentId == student.id %} selected {% endif %}>{{student.name}}
 										{{student.surname}}</option>
 								{% endfor %}
 							</select>
-							<button type="submit" class="btn btn-dark">Filter</button>
+							<button type="submit" class="btn btn-dark">Filter IT!</button>
 						</form>
-						<a href="{{path('grade_index')}}">Clear filter</a>
-						<ul class="book-list">
-							{% if grades is empty %}
-								<p>There are no grades to show for selected student.</p>
-							{% endif %}
-							{% for grade in grades %}
-								<li class="container list-group-item">
-									<div class="row list-group-item__line">
-										<div class="col-sm">
-											{{grade.student.name}}
-											{{grade.student.surname}}
-										</div>
-										<div class="btn-group list-group-item__line__buttons" role="group" aria-label="Basic example">
-											<a href="{{path('student_edit', {id:grade.id})}}" class="btn btn-secondary">EDIT</a>
-											<form action="{{path('student_delete', {id:grade.id})}}" method="POST">
-												<button type="submit" class="btn btn-primary">DELETE</button>
-											</form>
-										</div>
-									</div>
-									<h4>
-										<span class="badge badge-secondary">Lecture</span>
-									</h4>
-									<ul class="list-group">
-										{% for lecture in lectures %}
-											<li class="list-group-item">
-												{{lecture.title}}
-												Grade:
+						<a href="{{path('grade_index')}}">CLEAR</a>
+						<div class="table-responsive-sm">
+							<table class="table">
+								<thead class="thead-dark">
+									<tr>
+										<th scope="col">Student Name</th>
+										<th scope="col">Lecture</th>
+										<th scope="col">Grade</th>
+										<th scope="col"></th>
+									</tr>
+								</thead>
+								{% for grade in grades %}
+									<tbody>
+										<tr>
+											<td>
+												{{grade.student.name}}
+												{{grade.student.surname}}
+											</td>
+											<td>
+												{{grade.lecture.title}}
+											</td>
+											<td>
 												{{grade.grade}}
-											</li>
-										{% endfor %}
-									</ul>
-								</li>
-							{% endfor %}
-						</li>
-					</ul>
+											</td>
+											<td class="list-group-item__line__buttons" role="group" aria-label="Basic example">
+												<a class="btn btn-secondary" href="{{path('grade_edit', {id: grade.id})}}">Edit</a>
+												<form action="{{path('grade_delete', {id:grade.id})}}" method="POST">
+													<button class="btn btn-primary" type="submit">Delete</button>
+												</form>
+											</td>
+										</tr>
+									</tbody>
+								{% endfor %}
+							</ul>
+						</div>
+					</div>
 				</div>
-			{% endblock %}
+			</div>
+		</div>
+	{% endblock %}

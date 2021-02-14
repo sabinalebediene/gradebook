@@ -22,15 +22,6 @@
 								<label>Description</label>
 								<textarea name="lecture_description" id="summernote"></textarea>
 							</div>
-							<div class="form-group">
-								<select name="lecture_student_id" class="form-control">
-									<option value="0">Select student</option>
-									{% for student in students %}
-										<option value="{{student.id}}">{{student.name}}
-											{{student.surname}}</option>
-									{% endfor %}
-								</select>
-							</div>
 							<button type="submit" class="btn btn-primary">Add new Lecture</button>
 						</form>
 					</div>

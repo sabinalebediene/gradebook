@@ -9,29 +9,40 @@
 			<div class="col-md-8">
 				<div class="card">
 					<div class="card-header">
-						<h1>Edit Grade ✅</h1>
+						<h1>Edit Grade</h1>
 					</div>
 
 					<div class="card-body">
 						<form action="{{path('grade_update', {id: grade.id})}}" method="POST">
-							Grade:
-							<input type="text" name="grade_grade" value="{{grade.grade}}">
-							<select name="grade_student_id">
-								{% for student in students %}
-									<option value="{{student.id}}" {% if student.id == grade.StudentId %} selected {% endif %}>
-										{{student.name}}
-										{{student.surname}}
-									</option>
-								{% endfor %}
-							</select>
-							<select name="grade_lecture_id">
-								{% for lecture in lectures %}
-									<option value="{{lecture.id}}" {% if lecture.id == grade.LectureId %} selected {% endif %}>
-										{{lecture.title}}
-									</option>
-								{% endfor %}
-							</select>
-							<button type="submit">Edit grade</button>
+							<div class="form-group">
+								<label>Grade:</label>
+								<input type="text" class="form-control" name="grade_grade" value="{{grade.grade}}">
+								<small class="form-text text-muted">Grade</small>
+							</div>
+							<div class="form-group">
+								<label>Student:</label>
+								<select name="grade_student_id" class="form-control">
+									{% for student in students %}
+										<option value="{{student.id}}" {% if student.id == grade.StudentId %} selected {% endif %}>
+											{{student.name}}
+											{{student.surname}}
+										</option>
+									{% endfor %}
+								</select>
+								<small class="form-text text-muted">Student</small>
+							</div>
+							<div class="form-group">
+								<label>Lecture:</label>
+								<select name="grade_lecture_id" class="form-control">
+									{% for lecture in lectures %}
+										<option value="{{lecture.id}}" {% if lecture.id == grade.LectureId %} selected {% endif %}>
+											{{lecture.title}}
+										</option>
+									{% endfor %}
+								</select>
+								<small class="form-text text-muted">Lecture</small>
+							</div>
+							<button type="submit" class="btn btn-primary">Edit grade</button>
 						</form>
 					</div>
 				</div>

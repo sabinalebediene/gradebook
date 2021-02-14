@@ -34,8 +34,8 @@
 										{{lecture.title}}
 									</div>
 									<div class="btn-group list-group-item__line__buttons" role="group" aria-label="Basic example">
-										<a href="{{path('student_edit', {id:lecture.id})}}" class="btn btn-secondary">EDIT</a>
-										<form action="{{path('student_delete', {id:lecture.id})}}" method="POST">
+										<a href="{{path('lecture_edit', {id:lecture.id})}}" class="btn btn-secondary">EDIT</a>
+										<form action="{{path('lecture_delete', {id:lecture.id})}}" method="POST">
 											<button type="submit" class="btn btn-primary">DELETE</button>
 										</form>
 									</div>

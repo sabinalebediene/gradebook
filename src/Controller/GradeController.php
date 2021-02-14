@@ -44,6 +44,8 @@ class GradeController extends AbstractController
             'grades' => $grades,
             'students' => $students,
             'lectures' => $lectures,
+            'studentId' => $r->query->get('student_id') ?? 0,
+            'success' => $r->getSession()->getFlashBag()->get('success', [])
             // 'studentId' => $r->query->get('student_id') ?? 0
         ]);
     }
@@ -125,7 +127,7 @@ class GradeController extends AbstractController
     /**
      * @Route("/grade/edit/{id}", name="grade_edit", methods={"GET"})
      */
-    public function edit(int $id): Response
+    public function edit(Request $r, int $id): Response
     {
         $grade = $this->getDoctrine()
             ->getRepository(Grade::class)
